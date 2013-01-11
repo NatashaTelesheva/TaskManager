@@ -1,0 +1,15 @@
+<%- model_class = Project -%>
+
+<div class="page-header">
+  <div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="<%= url_for() %>"><%=t '.title', :default => t('helpers.titles.new', :model => model_class.model_name.human, :default => "New #{model_class.model_name.human}") %></a>
+          <ul class="nav">
+            <li class="divider-vertical"></li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>
+

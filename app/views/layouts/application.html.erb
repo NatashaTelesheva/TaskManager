@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "TaskManager" %></title>
+    <%= csrf_meta_tags %>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js" type="text/javascript"></script>
+    <![endif]-->
+
+    <%= stylesheet_link_tag "application", :media => "all" %>
+
+    <!-- For all other devices -->
+    <!-- Size should be 32 x 32 pixels -->
+    <%= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
+  </head>
+  <body>
+
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">TaskManager</a>
+          <div class="container nav-collapse">
+            <ul class="nav">
+              <li><%= link_to "Users", {:controller => "users"}  %></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div id="modal_window" class="modal hide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>Please fill the form</h3>
+    </div>
+    <div class="modal-body">
+      <p>Loading ... </p>
+    </div>
+    </div>
+
+    <div class="container body">
+      <div class="row">
+        <div class="span9">
+           <%= yield %>
+        </div>
+        <div class="span3">
+          <div class="well sidebar-nav nav-inverse">
+            <ul class="nav nav-list">
+              <li class="nav-header">Project</li>
+              <li>
+                 <div class="btn-group">
+                  <a title="Show all"
+                     class="btn"
+                     href="<%= url_for :controller => 'projects' %>"
+                     ><i class="icon-list"></i> List</a>
+                   <a class="btn"
+                     href="<%= url_for :controller => 'projects', :action => 'ajaxnew' %>" 
+                     data-toggle="modal"
+                     data-target="#modal_window"
+                     data-backdrop="remote"
+                     ><i class="icon-plus"></i> Create</a>
+                 </div>
+              </li>
+            </ul>
+            
+          </div><!--/.well -->
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <footer>
+        <p>&copy; Tieliesheva Natasha 2012</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Javascripts
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <%= javascript_include_tag "application" %>
+
+  </body>
+</html>

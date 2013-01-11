@@ -1,0 +1,96 @@
+<%- model_class = Project -%>
+
+<div class="page-header">
+
+  <div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="<%= url_for() %>"><%=t '.title', :default => model_class.model_name.human.pluralize %></a>
+          <ul class="nav">
+            <li class="divider-vertical"></li>
+            <li>
+              <a title="Show all projects" href="<%= url_for({ :per_page => @quantity, :sort => @sort }) %>">Quantity: <%= @quantity %></a>
+            </li>
+          </ul>
+          <form action="<%= url_for({ :page => @page, :per_page => @quantity, :sort => @sort }) %>" method="get" class="navbar-search pull-left">
+            <input type="text" name="search" value="<%= @search %>" placeholder="Search" class="search-query span2">
+          </form>
+          <ul class="nav pull-right">
+            <li class="divider-vertical"></li>
+            <li>
+              <a title="Create new project" href="<%= new_project_path %>"><i class="icon-plus"></i> New project</a>
+            </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<%= will_paginate @projects %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th>
+        <a class="btn btn-mini <%= 'btn-success' if @by == 'name' %>"
+           href="<%= url_for({ :page => @page, :per_page => @per_page, :search => @search, :by => 'name', :sort => @sort == 'ASC' ? 'DESC' : 'ASC' }) %>"
+           ><i class="icon-<%= @by == 'name' ? (@sort == 'DESC' ? 'arrow-down' : 'arrow-up') : 'cog' %>"></i></a>
+        <%= model_class.human_attribute_name(:name) %>
+      </th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      <th>
+        <a class="btn btn-mini <%= 'btn-success' if @by == 'tasks_quantity' %>"
+           href="<%= url_for({ :page => @page, :per_page => @per_page, :search => @search, :by => 'tasks_quantity', :sort => @sort == 'ASC' ? 'DESC' : 'ASC' }) %>"
+           ><i class="icon-<%= @by == 'tasks_quantity' ? (@sort == 'DESC' ? 'arrow-down' : 'arrow-up') : 'cog' %>"></i></a>
+           Tasks</th>
+      <th>Tasks action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @projects.each do |project| %>
+      <tr>
+        <td><%= link_to project.id, project_path(project) %></td>
+        <td>
+            <a title="Go to tasks list"
+               class=""
+               href="<%= project_tasks_path(project,@task) %>"
+               ><%= project.name %></a>
+	</td>
+        <td><%= project.created_at.strftime('%d/%m/%Y') %></td>
+        <td>
+          <div class="btn-group">
+            <a title="Edit"
+               class="btn btn-mini"
+               href="<%= edit_project_path(project) %>"
+               ><i class="icon-edit"></i></a>
+
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        project_path(project),
+                        :method => :delete,
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-mini btn-danger' %>
+          </div>
+        </td>
+        <td><%= project.tasks_quantity %></td>
+        <td>
+          <div class="btn-group">
+            <a title="Go to tasks list"
+               class="btn btn-mini"
+               href="<%= project_tasks_path(project,@task) %>"
+               ><i class="icon-list"></i></a>
+            <a title="Add new task"
+               class="btn btn-mini"
+               href="<%= new_project_task_path(project,@task) %>"
+               ><i class="icon-plus"></i></a>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @projects %>
+
